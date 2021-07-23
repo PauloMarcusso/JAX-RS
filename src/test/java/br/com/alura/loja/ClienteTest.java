@@ -18,4 +18,12 @@ public class ClienteTest {
 		Assert.assertTrue(conteudo.contains("<rua>Rua Vergueiro 3185"));
 	}
 
+	@Test
+	public void testaQueAConexaoComOServidorFuncionaNoPathDeProjetos() {
+		
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8081");
+		String conteudo = target.path("/projetos").request().get(String.class);
+		Assert.assertTrue(conteudo.contains("<nome>Minha Loja"));
+	}
 }
