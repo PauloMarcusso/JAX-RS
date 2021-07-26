@@ -12,14 +12,14 @@ import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
 
-import br.com.alura.loja.modelo.Carrinho;
+import br.com.alura.loja.modelo.Projeto;
 
-public class ClienteTest {
+public class ProjetoTest {
 	
 	HttpServer server;
 	
 	@Before
-	public void setUp(){
+	public void setUp() {
 		server = Servidor.inicializaServidor();
 	}
 	
@@ -27,16 +27,31 @@ public class ClienteTest {
 	public void setDown() {
 		server.stop();
 	}
-	
+
 	@Test
-	public void testaQueBuscarUmCarrinhoTrazOCarrinhoEsperado() {
+	public void testaQueAConexaoComOServidorFuncionaNoPathDeProjetos() {
 		
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8081");
-		String conteudo = target.path("/carrinhos/1").request().get(String.class);
-		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
-		Assert.assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
+		String conteudo = target.path("/projetos/1").request().get(String.class);
+		Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
+		Assert.assertEquals("Minha Loja", projeto.getNome());
 	}
-
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
