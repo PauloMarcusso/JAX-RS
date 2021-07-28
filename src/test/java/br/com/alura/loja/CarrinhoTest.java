@@ -8,6 +8,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,7 +29,9 @@ public class CarrinhoTest {
 	@Before
 	public void setUp() {
 		server = Servidor.inicializaServidor();
-		this.client = ClientBuilder.newClient();
+		ClientConfig config = new ClientConfig();		
+		config.register(new LoggingFilter());
+		this.client = ClientBuilder.newClient(config);
 		this.target = client.target("http://localhost:8081");
 	}
 
@@ -57,6 +61,7 @@ public class CarrinhoTest {
 		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 
 		Response response = target.path("/carrinhos").request().post(entity);
+		
 		String location = response.getHeaderString("Location");
 		String conteudo = client.target(location).request().get(String.class);
 		
